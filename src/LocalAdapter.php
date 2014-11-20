@@ -49,11 +49,21 @@ class LocalAdapter implements IAdapter
 
     public function exists($filename)
     {
+        return file_exists($filename);
+    }
+
+    public function read($fullname, $filename)
+    {
+        return $fullname;
+    }
+
+    public function writeFile($filePath, $filename, $uploadDir)
+    {
 
     }
 
-    public function getFile(& $filepath, $filename)
+    public function delete($filename)
     {
-        return file_exists($filepath);
+        unlink($filename);
     }
 }
