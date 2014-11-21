@@ -12,4 +12,6 @@ namespace samson\fs;
 class LocalFileSystemConnector extends \samson\core\CompressableExternalModule {
     /** Module Identifier */
     protected $id = 'samson_fs_local';
+
+    public $adapterParameters = 'upload';
 }

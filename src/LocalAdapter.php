@@ -14,13 +14,9 @@ namespace samson\fs;
  */
 class LocalAdapter implements IAdapter
 {
-    /**
-     * @param mixed $uploadDir
-     * @see \samson\upload\iAdapter::init()
-     * @return mixed|void
-     */
-    public function init($uploadDir = null)
+    public function __construct()
     {
+        $uploadDir = m('samson_fs_local')->adapterParameters;
         // If upload path does not exists - create it
         if (isset($uploadDir) && !file_exists($uploadDir)) {
             mkdir($uploadDir, 0775, true);
@@ -57,9 +53,12 @@ class LocalAdapter implements IAdapter
         return $fullname;
     }
 
-    public function writeFile($filePath, $filename, $uploadDir)
+    public function copy($filePath, $filename, $uploadDir)
     {
-
+        if ($filePath != $uploadDir.'/'.$filename) {
+            copy($filePath, $uploadDir.'/'.$filename);
+            $this->delete($filePath);
+        }
     }
 
     public function delete($filename)
