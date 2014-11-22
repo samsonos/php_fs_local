@@ -27,7 +27,7 @@ class LocalAdapter implements IAdapter
      * @param mixed $data
      * @param string $filename
      * @param string $uploadDir
-     * @see \samson\upload\iAdapter::write()
+     * @see \samson\fs\iAdapter::write()
      * @return bool|string
      */
     public function write($data, $filename = '', $uploadDir = '')
