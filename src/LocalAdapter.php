@@ -17,6 +17,7 @@ class LocalAdapter implements IAdapter
     public function __construct()
     {
         $uploadDir = m('samson_fs_local')->adapterParameters;
+
         // If upload path does not exists - create it
         if (isset($uploadDir) && !file_exists($uploadDir)) {
             mkdir($uploadDir, 0775, true);
@@ -53,7 +54,7 @@ class LocalAdapter implements IAdapter
         return $fullname;
     }
 
-    public function copy($filePath, $filename, $uploadDir)
+    public function move($filePath, $filename, $uploadDir)
     {
         if ($filePath != $uploadDir.'/'.$filename) {
             copy($filePath, $uploadDir.'/'.$filename);
