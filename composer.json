@@ -1,7 +1,15 @@
 {
 	"name":"samsonos/php_fs_local",
+    "minimum-stability":"dev",
+    "description": "SamsonPHP local file system service",
+    "keywords": [ "local file system", "samsonphp"],
+    "authors":[
+        {
+            "name":"Vitaly Iegorov",
+            "email":"egorov@samsonos.com"
+        }
+    ],
 	"require":{
-        "samsonos/php_core":"*",
         "samsonos/php_fs":"*"
     },
 	"license":"Open Software License (OSL) v 3.0",
