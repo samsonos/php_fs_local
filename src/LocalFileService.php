@@ -62,18 +62,30 @@ class LocalFileService extends CompressableService implements IFileSystem
     }
 
     /**
-     * Write a file to selected location
+     * Move file to selected location
      * @param $filePath string Path to file
      * @param $filename string
      * @param $uploadDir string
-     * @return mixed
+     * @return bool|string False if failed otherwise path to moved file
      */
     public function move($filePath, $filename, $uploadDir)
     {
-        if ($filePath != $uploadDir.'/'.$filename) {
-            copy($filePath, $uploadDir.'/'.$filename);
+        // Build new path
+        $newPath = $uploadDir.'/'.$filename;
+
+        // If this file is not already exists
+        if ($filePath != $newPath) {
+
+            // Copy file to a new location
+            copy($filePath, $newPath);
+
+            // Remove current file
             $this->delete($filePath);
+
+            return $newPath;
         }
+
+        return false;
     }
 
     /**
