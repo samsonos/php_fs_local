@@ -30,7 +30,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
     public function testWriteRead()
     {
         // Get instance using services factory as error will signal other way
-        $this->fileService = \samson\core\Service::getInstance('samson\fs\FileService');
+        $this->fileService = \samson\core\Service::getInstance('samson\fs\LocalFileService');
 
         // Create temporary file
         $path = tempnam(sys_get_temp_dir(), 'test');
@@ -49,7 +49,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
     public function testDelete()
     {
         // Get instance using services factory as error will signal other way
-        $this->fileService = \samson\core\Service::getInstance('samson\fs\FileService');
+        $this->fileService = \samson\core\Service::getInstance('samson\fs\LocalFileService');
 
         // Create temporary file
         $path = tempnam(sys_get_temp_dir(), 'test');
@@ -65,7 +65,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
     public function testExists()
     {
         // Get instance using services factory as error will signal other way
-        $this->fileService = \samson\core\Service::getInstance('samson\fs\FileService');
+        $this->fileService = \samson\core\Service::getInstance('samson\fs\LocalFileService');
 
         // Create temporary file
         $path = tempnam(sys_get_temp_dir(), 'test');
@@ -81,7 +81,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
     public function testMove()
     {
         // Get instance using services factory as error will signal other way
-        $this->fileService = \samson\core\Service::getInstance('samson\fs\FileService');
+        $this->fileService = \samson\core\Service::getInstance('samson\fs\LocalFileService');
 
         // Create temporary file
         $path = tempnam(sys_get_temp_dir(), 'test');
