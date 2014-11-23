@@ -45,6 +45,25 @@ class EventTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('123', $data, 'File service writing failed');
     }
 
+    /** Test file service writing failed */
+    public function testFailWrite()
+    {
+        // Get instance using services factory as error will signal other way
+        $this->fileService = \samson\core\Service::getInstance('samson\fs\LocalFileService');
+
+        // Create temporary file
+        $path = tempnam(__DIR__.'/test/', 'test');
+
+        // Write data to temporary file
+        $this->fileService->write('123', $path);
+
+        // Read data from file
+        $data = $this->fileService->read($path);
+
+        // Perform test
+        $this->assertNotEquals('123', $data, 'File service failed writing failed');
+    }
+
     /** Test file service deleting */
     public function testDelete()
     {
@@ -96,5 +115,21 @@ class EventTest extends \PHPUnit_Framework_TestCase
         // Perform test
         $this->assertFileExists($newPath, 'File service move failed - Moved file not found');
         $this->assertFileNotExists($path, 'File service move failed - Original file is not deleted');
+    }
+
+    /** Test file service moving to existing file */
+    public function testMoveToExisting()
+    {
+        // Get instance using services factory as error will signal other way
+        $this->fileService = \samson\core\Service::getInstance('samson\fs\LocalFileService');
+
+        // Create temporary file
+        $path = tempnam(sys_get_temp_dir(), 'test');
+
+        // Move file to a new dir
+        $newPath = $this->fileService->move($path, basename($path), dirname($path));
+
+        // Perform test
+        $this->assertFileExists($newPath, 'File service move failed - Moved file not found');
     }
 }
