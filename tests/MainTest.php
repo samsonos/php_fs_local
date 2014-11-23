@@ -52,7 +52,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
         $this->fileService = \samson\core\Service::getInstance('samson\fs\LocalFileService');
 
         // Create temporary file
-        $path = tempnam(__DIR__.'/test/', 'test');
+        $path = __DIR__.'/test/test.txt';
 
         // Write data to temporary file
         $this->fileService->write('123', $path);
