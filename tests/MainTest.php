@@ -132,4 +132,17 @@ class EventTest extends \PHPUnit_Framework_TestCase
         // Perform test
         $this->assertEquals(false, $newPath, 'File service move failed - Moved file not found');
     }
+
+    /** Test file service extension method */
+    public function testExtension()
+    {
+        // Get instance using services factory as error will signal other way
+        $this->fileService = \samson\core\Service::getInstance('samson\fs\LocalFileService');
+
+        // Move file to a new dir
+        $extension = $this->fileService->extension(__FILE__);
+
+        // Perform test
+        $this->assertEquals('php', $extension, 'File service extension method failed - Extension is not correct');
+    }
 }
