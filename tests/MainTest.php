@@ -41,7 +41,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
         mkdir($testDir, 0777);
 
         // Write data to temporary file
-        $writtenFile = $this->fileService->write('123', $path, $testDir);
+        $writtenFile = $this->fileService->write('123', basename($path), $testDir);
 
         // Perform test
         $this->assertStringEqualsFile($writtenFile, '123');
