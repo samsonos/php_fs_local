@@ -10,15 +10,19 @@ use samson\fs\LocalFileService;
  */
 class EventTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var \samson\fs\FileService Pointer to file service */
+    /** @var \samson\fs\LocalFileService Pointer to file service */
     public $fileService;
+
+    /** Tests init */
+    public function setUp()
+    {
+        // Get instance using services factory as error will signal other way
+        $this->fileService = \samson\core\Service::getInstance('samson\fs\LocalFileService');
+    }
 
     /** Test reading */
     public function testRead()
     {
-        // Create instance
-        $this->fileService = new LocalFileService(__DIR__.'../');
-
         // Read current file data
         $data = $this->fileService->read(__FILE__);
 
@@ -26,17 +30,19 @@ class EventTest extends \PHPUnit_Framework_TestCase
         $this->assertStringEqualsFile(__FILE__, $data, 'File service read failed');
     }
 
-    /** Test file service writing and reading */
-    public function testWriteRead()
+    /** Test file service writing */
+    public function testWrite()
     {
-        // Get instance using services factory as error will signal other way
-        $this->fileService = \samson\core\Service::getInstance('samson\fs\LocalFileService');
-
         // Create temporary file
         $path = tempnam(sys_get_temp_dir(), 'test');
 
+        // Create test dir
+        $testDir = sys_get_temp_dir().'/testDir/';
+        mkdir($testDir, 0777);
+
         // Write data to temporary file
-        $this->fileService->write('123', $path);
+        $this->fileService->write('123', $path, $testDir);
+
 
         // Read data from file
         $data = $this->fileService->read($path);
@@ -48,28 +54,19 @@ class EventTest extends \PHPUnit_Framework_TestCase
     /** Test file service writing failed */
     public function testFailWrite()
     {
-        // Get instance using services factory as error will signal other way
-        $this->fileService = \samson\core\Service::getInstance('samson\fs\LocalFileService');
-
         // Create temporary file
         $path = __DIR__.'/test/test.txt';
 
         // Write data to temporary file
-        $this->fileService->write('123', $path);
-
-        // Read data from file
-        $data = $this->fileService->read($path);
+        $writtenFile = $this->fileService->write('123', $path);
 
         // Perform test
-        $this->assertNotEquals('123', $data, 'File service failed writing failed');
+        $this->assertStringEqualsFile($writtenFile, '123');
     }
 
     /** Test file service deleting */
     public function testDelete()
     {
-        // Get instance using services factory as error will signal other way
-        $this->fileService = \samson\core\Service::getInstance('samson\fs\LocalFileService');
-
         // Create temporary file
         $path = tempnam(sys_get_temp_dir(), 'test');
 
@@ -83,9 +80,6 @@ class EventTest extends \PHPUnit_Framework_TestCase
     /** Test file service existing */
     public function testExists()
     {
-        // Get instance using services factory as error will signal other way
-        $this->fileService = \samson\core\Service::getInstance('samson\fs\LocalFileService');
-
         // Create temporary file
         $path = tempnam(sys_get_temp_dir(), 'test');
 
@@ -99,9 +93,6 @@ class EventTest extends \PHPUnit_Framework_TestCase
     /** Test file service moving */
     public function testMove()
     {
-        // Get instance using services factory as error will signal other way
-        $this->fileService = \samson\core\Service::getInstance('samson\fs\LocalFileService');
-
         // Create temporary file
         $path = tempnam(sys_get_temp_dir(), 'test');
 
@@ -120,9 +111,6 @@ class EventTest extends \PHPUnit_Framework_TestCase
     /** Test file service moving to existing file */
     public function testMoveToExisting()
     {
-        // Get instance using services factory as error will signal other way
-        $this->fileService = \samson\core\Service::getInstance('samson\fs\LocalFileService');
-
         // Create temporary file
         $path = tempnam(sys_get_temp_dir(), 'test');
 
@@ -136,9 +124,6 @@ class EventTest extends \PHPUnit_Framework_TestCase
     /** Test file service extension method */
     public function testExtension()
     {
-        // Get instance using services factory as error will signal other way
-        $this->fileService = \samson\core\Service::getInstance('samson\fs\LocalFileService');
-
         // Move file to a new dir
         $extension = $this->fileService->extension(__FILE__);
 

@@ -34,7 +34,7 @@ class LocalFileService extends CompressableService implements IFileSystem
 
         // Put file and return true if at least one byte is written
         if (file_put_contents($path, $data) !== false) {
-            return $uploadDir.'/';
+            return $uploadDir.'/'.$filename;
         } else { // We have failed my lord..
             return false;
         }
