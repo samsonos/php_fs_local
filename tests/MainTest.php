@@ -57,7 +57,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
         $writtenPath = $this->fileService->write('123', $path);
 
         // Perform test
-        $this->assertEquals(false, $writtenPath.basename($path), '123');
+        $this->assertEquals(false, $writtenPath, '123');
     }
 
     /** Test file service deleting */
