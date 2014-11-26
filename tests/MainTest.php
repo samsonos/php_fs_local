@@ -41,10 +41,10 @@ class EventTest extends \PHPUnit_Framework_TestCase
         mkdir($testDir, 0777);
 
         // Write data to temporary file
-        $writtenFile = $this->fileService->write('123', basename($path), $testDir);
+        $writtenPath = $this->fileService->write('123', basename($path), $testDir);
 
         // Perform test
-        $this->assertStringEqualsFile($writtenFile, '123');
+        $this->assertStringEqualsFile($writtenPath.basename($path), '123');
     }
 
     /** Test file service writing failed */
@@ -54,10 +54,10 @@ class EventTest extends \PHPUnit_Framework_TestCase
         $path = __DIR__.'/test/test.txt';
 
         // Write data to temporary file
-        $writtenFile = $this->fileService->write('123', $path);
+        $writtenPath = $this->fileService->write('123', $path);
 
         // Perform test
-        $this->assertEquals(false, $writtenFile, '123');
+        $this->assertEquals(false, $writtenPath.basename($path), '123');
     }
 
     /** Test file service deleting */
