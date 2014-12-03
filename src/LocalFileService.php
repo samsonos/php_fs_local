@@ -14,7 +14,7 @@ use samson\core\CompressableService;
  * Local file system adapter implementation
  * @package samson\upload
  */
-class LocalFileService extends CompressableService implements IFileSystem
+class LocalFileService extends AbstractFileService
 {
     /** @var string Identifier */
     protected $id = 'fs_local';
@@ -70,33 +70,6 @@ class LocalFileService extends CompressableService implements IFileSystem
     }
 
     /**
-     * Move file to selected location
-     * @param $filePath string Path to file
-     * @param $filename string
-     * @param $uploadDir string
-     * @return bool|string False if failed otherwise path to moved file
-     */
-    public function move($filePath, $filename, $uploadDir)
-    {
-        // Build new path
-        $newPath = $uploadDir.'/'.$filename;
-
-        // If this file is not already exists
-        if ($filePath != $newPath) {
-
-            // Copy file to a new location
-            copy($filePath, $newPath);
-
-            // Remove current file
-            $this->delete($filePath);
-
-            return $newPath;
-        }
-
-        return false;
-    }
-
-    /**
      * Delete file from current file system
      * @param $filename string File for deleting
      * @return mixed
@@ -114,5 +87,24 @@ class LocalFileService extends CompressableService implements IFileSystem
     public function extension($filePath)
     {
         return pathinfo($filePath, PATHINFO_EXTENSION);
+    }
+
+    /**
+     * Get recursive $path listing collection
+     * @param string $path Path for listing contents
+     * @param array $extensions Collection of file extensions to filter
+     * @param int $maxLevel Maximum nesting level
+     * @param int $level Current nesting level of recursion
+     * @param array $restrict Collection of restricted paths
+     * @return array $path recursive directory listing
+     */
+    public function dir(
+        $path,
+        $extensions = null,
+        $maxLevel = null,
+        $level = 0,
+        $restrict = array('.git', '.svn', '.hg', '.settings')
+    ) {
+        return array();
     }
 }
