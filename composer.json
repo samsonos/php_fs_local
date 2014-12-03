@@ -10,7 +10,7 @@
         }
     ],
 	"require":{
-        "samsonos/php_fs":"1.*"
+        "samsonos/php_fs":"*"
     },
     "require-dev": {
         "satooshi/php-coveralls": "dev-master",
