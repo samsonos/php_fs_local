@@ -47,14 +47,6 @@ class LocalFileService extends AbstractFileService
      */
     public function exists($filename)
     {
-        // Cut base dir name
-        if (__SAMSON_BASE__ != '/') {
-            $filename = str_replace(__SAMSON_BASE__, '', $filename);
-        }
-        // Cut first back slash to retrieve relative path
-        if ($filename[0] === '/') {
-            $filename = substr($filename, 1);
-        }
         return file_exists($filename);
     }
 
