@@ -90,12 +90,23 @@ class LocalFileService extends AbstractFileService
     }
 
     /**
+     * Define if $filePath is directory
+     * @param string $filePath Path
+     * @return boolean Is $path a directory or not
+     */
+    public function isDir($filePath)
+    {
+        return is_dir($filePath);
+    }
+
+    /**
      * Get recursive $path listing collection
      * @param string $path Path for listing contents
      * @param array $extensions Collection of file extensions to filter
      * @param int $maxLevel Maximum nesting level
      * @param int $level Current nesting level of recursion
      * @param array $restrict Collection of restricted paths
+     * @param array     $result   Collection of restricted paths
      * @return array $path recursive directory listing
      */
     public function dir(
@@ -103,8 +114,67 @@ class LocalFileService extends AbstractFileService
         $extensions = null,
         $maxLevel = null,
         $level = 0,
-        $restrict = array('.git', '.svn', '.hg', '.settings')
+        $restrict = array('.git', '.svn', '.hg', '.settings'),
+        & $result = array()
     ) {
-        return array();
+        // If we have nesting level limit
+        if (isset($maxLevel) && $level > $maxLevel) {
+            // Exit recursion
+            return $result;
+        }
+
+        // If type-filter is passed make it array anyway
+        if (isset($extensions) && !is_array($extensions)) {
+            $extensions = array($extensions);
+        }
+
+        // Read path
+        if (file_exists($path) && $handle = opendir($path)) {
+            // Fastest reading method
+            while (false !== ($entry = readdir($handle))) {
+                // Ignore root paths
+                if ($entry == '..' || $entry == '.') {
+                    continue;
+                }
+
+                // Build full REAL path to entry
+                $fullPath = realpath($path . '/' . $entry);
+
+                // If this is a file
+                if (!$this->isDir($fullPath)) {
+                    // Check file type if type filter is passed
+                    if (!isset($extensions) || in_array(pathinfo($fullPath, PATHINFO_EXTENSION), $extensions)) {
+                        $result[] = $fullPath;
+                    }
+                } else {
+                    // Define if current path is not restricted
+                    $ignored = false;
+                    // Iterate all restrictions
+                    foreach ($restrict as $ignore) {
+                        // Try to find ignored path pattern in full path and store it to ignored flag
+                        if (($ignored = ($ignore == $fullPath)) !== false) {
+                            // This is ignored path - break, ignored now is false(0)
+                            break;
+                        }
+                    }
+
+                    // If this path is not restricted
+                    if ($ignored === false) {
+                        // Go deeper in recursion
+                        $this->dir($fullPath, $extensions, $maxLevel, ++$level, $restrict, $result);
+                    }
+                }
+            }
+
+            // Закроем чтение папки
+            closedir($handle);
+        }
+
+        // Sort results
+        if(sizeof($result)) {
+            sort($result);
+        }
+
+        return $result;
     }
 }
