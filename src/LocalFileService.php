@@ -101,7 +101,6 @@ class LocalFileService extends AbstractFileService
      */
     public function dir(
         $path,
-        $extensions = null,
         $maxLevel = null,
         $level = 0,
         $restrict = array('.git', '.svn', '.hg', '.settings'),
@@ -113,42 +112,34 @@ class LocalFileService extends AbstractFileService
             return $result;
         }
 
-        // Check if path does not exists or if we cannot read a path
-        $handle = opendir($path);
-        if (!file_exists($path) || $handle === false) {
-            return $result;
-        }
+        // Check if we can read this path
+        if (($handle = opendir($path)) !== false) {
 
-        // If type-filter is passed make it array anyway
-        $extensions = isset($extensions) && !is_array($extensions) ? array($extensions) : $extensions;
-
-        // Fastest reading method
-        while (false !== ($entry = readdir($handle))) {
-            // Ignore root paths
-            if ($entry == '..' || $entry == '.') {
-                continue;
-            }
-
-            // Build full REAL path to entry
-            $fullPath = realpath($path . '/' . $entry);
-
-            // If this is a file
-            if (!$this->isDir($fullPath)) {
-                // Check file type if type filter is passed
-                if (!isset($extensions) || in_array(pathinfo($fullPath, PATHINFO_EXTENSION), $extensions)) {
-                    $result[] = $fullPath;
+            // Fastest reading method
+            while (false !== ($entry = readdir($handle))) {
+                // Ignore root paths
+                if ($entry == '..' || $entry == '.') {
+                    continue;
                 }
-            } elseif (in_array($fullPath, $restrict) === false) {
-                // If this is a folder - go deeper in recursion
-                $this->dir($fullPath, $extensions, $maxLevel, ++$level, $restrict, $result);
+
+                // Build full REAL path to entry
+                $fullPath = realpath($path . '/' . $entry);
+
+                // If this is a file
+                if (!$this->isDir($fullPath)) {
+                    $result[] = $fullPath;
+                } elseif (in_array($fullPath, $restrict) === false) {
+                    // If this is a folder - go deeper in recursion
+                    $this->dir($fullPath, $maxLevel, ++$level, $restrict, $result);
+                }
             }
+
+            // Close reading handle
+            closedir($handle);
+
+            // Sort results
+            sort($result);
         }
-
-        // Close reading handle
-        closedir($handle);
-
-        // Sort results
-        sort($result);
 
         return $result;
     }
