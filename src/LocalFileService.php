@@ -8,8 +8,6 @@
 
 namespace samson\fs;
 
-use samson\core\CompressableService;
-
 /**
  * Local file system adapter implementation
  * @package samson\upload
@@ -25,7 +23,7 @@ class LocalFileService extends AbstractFileService
      * @param mixed $data Data to be written
      * @param string $filename File name
      * @param string $uploadDir Relative file path
-     * @return string|boolean Relative path to created file, false if there were errors
+     * @return string|false Relative path to created file, false if there were errors
      */
     public function write($data, $filename = '', $uploadDir = '')
     {
@@ -54,7 +52,7 @@ class LocalFileService extends AbstractFileService
      * Read the file from current file system
      * @param $filePath string Path to file
      * @param $filename string
-     * @return mixed
+     * @return string
      */
     public function read($fullname, $filename = null)
     {
