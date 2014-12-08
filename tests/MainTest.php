@@ -45,6 +45,9 @@ class EventTest extends \PHPUnit_Framework_TestCase
         // Read data from file
         $data = $this->fileService->read($path);
 
+        // Write data to null temporary file
+        $this->fileService->write('123', basename($path).'TEST', sys_get_temp_dir());
+
         // Perform test
         $this->assertEquals('123', $data, 'File service writing failed');
     }
