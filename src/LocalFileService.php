@@ -116,9 +116,7 @@ class LocalFileService extends AbstractFileService
         }
 
         // If type-filter is passed make it array anyway
-        if (isset($extensions) && !is_array($extensions)) {
-            $extensions = array($extensions);
-        }
+        $extensions = isset($extensions) && !is_array($extensions) ? array($extensions) : $extensions;
 
         // Read path
         if (file_exists($path) && $handle = opendir($path)) {
@@ -139,7 +137,7 @@ class LocalFileService extends AbstractFileService
                         $result[] = $fullPath;
                     }
                 } else {
-                    // Define if current path is not restricted
+                    /*// Define if current path is not restricted
                     $ignored = false;
                     // Iterate all restrictions
                     foreach ($restrict as $ignore) {
@@ -154,7 +152,13 @@ class LocalFileService extends AbstractFileService
                     if ($ignored === false) {
                         // Go deeper in recursion
                         $this->dir($fullPath, $extensions, $maxLevel, ++$level, $restrict, $result);
+                    }*/
+                    // Check if this full folder path is not ignored
+                    if (in_array($fullPath, $restrict) === false) {
+                        // Go deeper in recursion
+                        $this->dir($fullPath, $extensions, $maxLevel, ++$level, $restrict, $result);
                     }
+
                 }
             }
 
@@ -163,7 +167,7 @@ class LocalFileService extends AbstractFileService
         }
 
         // Sort results
-        if(sizeof($result)) {
+        if (sizeof($result)) {
             sort($result);
         }
 
