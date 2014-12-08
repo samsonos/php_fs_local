@@ -40,7 +40,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
         $path = tempnam(sys_get_temp_dir(), 'test');
 
         // Write data to temporary file
-        $this->fileService->write('123', $path);
+        $this->fileService->write('123', basename($path), sys_get_temp_dir());
 
         // Read data from file
         $data = $this->fileService->read($path);
