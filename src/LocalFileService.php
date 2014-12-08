@@ -134,33 +134,16 @@ class LocalFileService extends AbstractFileService
                     if (!isset($extensions) || in_array(pathinfo($fullPath, PATHINFO_EXTENSION), $extensions)) {
                         $result[] = $fullPath;
                     }
-                } else {
-                    /*// Define if current path is not restricted
-                    $ignored = false;
-                    // Iterate all restrictions
-                    foreach ($restrict as $ignore) {
-                        // Try to find ignored path pattern in full path and store it to ignored flag
-                        if (($ignored = ($ignore == $fullPath)) !== false) {
-                            // This is ignored path - break, ignored now is false(0)
-                            break;
-                        }
-                    }
-
-                    // If this path is not restricted
-                    if ($ignored === false) {
-                        // Go deeper in recursion
-                        $this->dir($fullPath, $extensions, $maxLevel, ++$level, $restrict, $result);
-                    }*/
+                } else { // This is a folder
                     // Check if this full folder path is not ignored
                     if (in_array($fullPath, $restrict) === false) {
                         // Go deeper in recursion
                         $this->dir($fullPath, $extensions, $maxLevel, ++$level, $restrict, $result);
                     }
-
                 }
             }
 
-            // Закроем чтение папки
+            // Close reading handle
             closedir($handle);
         }
 

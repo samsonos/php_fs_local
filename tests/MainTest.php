@@ -189,4 +189,14 @@ class EventTest extends \PHPUnit_Framework_TestCase
         // Perform test
         $this->assertEquals('text/x-c++', $extension, 'File service mime type method failed - Mime type is not correct');
     }
+
+    /** Test file service dir method */
+    public function testDir()
+    {
+        // Scan project root dir
+        $files = $this->fileService->dir(dirname(dirname(__FILE__)));
+
+        // Perform test
+        $this->assertEquals(true, in_array(__FILE__, $files), 'File service dir failed - This file is not found in listing');
+    }
 }
