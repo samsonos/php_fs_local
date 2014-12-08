@@ -150,11 +150,7 @@ class LocalFileService extends AbstractFileService
         // Close reading handle
         closedir($handle);
 
-        // Sort results
-        if (sizeof($result)) {
-            sort($result);
-        }
-
-        return $result;
+        // Sort results and return
+        return sort($result);
     }
 }
