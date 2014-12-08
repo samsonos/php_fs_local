@@ -68,11 +68,14 @@ class EventTest extends \PHPUnit_Framework_TestCase
         // Create temporary file
         $path = tempnam(sys_get_temp_dir(), 'test');
 
-        // Write data to temporary file
+        // Check if path exists
         $exists = $this->fileService->exists($path);
+        $notExists = $this->fileService->exists($path.'TEST');
 
         // Perform test
         $this->assertEquals(true, $exists, 'File service exists failed');
+        // Perform test
+        $this->assertEquals(false, $notExists, 'File service exists failed');
     }
 
     /** Test relative path building */
