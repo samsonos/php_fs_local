@@ -113,39 +113,41 @@ class LocalFileService extends AbstractFileService
             return $result;
         }
 
+        // Check if path does not exists or if we cannot read a path
+        if (!file_exists($path) || $handle = opendir($path)) {
+            return $result;
+        }
+
         // If type-filter is passed make it array anyway
         $extensions = isset($extensions) && !is_array($extensions) ? array($extensions) : $extensions;
 
-        // Read path
-        if (file_exists($path) && $handle = opendir($path)) {
-            // Fastest reading method
-            while (false !== ($entry = readdir($handle))) {
-                // Ignore root paths
-                if ($entry == '..' || $entry == '.') {
-                    continue;
-                }
-
-                // Build full REAL path to entry
-                $fullPath = realpath($path . '/' . $entry);
-
-                // If this is a file
-                if (!$this->isDir($fullPath)) {
-                    // Check file type if type filter is passed
-                    if (!isset($extensions) || in_array(pathinfo($fullPath, PATHINFO_EXTENSION), $extensions)) {
-                        $result[] = $fullPath;
-                    }
-                } else { // This is a folder
-                    // Check if this full folder path is not ignored
-                    if (in_array($fullPath, $restrict) === false) {
-                        // Go deeper in recursion
-                        $this->dir($fullPath, $extensions, $maxLevel, ++$level, $restrict, $result);
-                    }
-                }
+        // Fastest reading method
+        while (false !== ($entry = readdir($handle))) {
+            // Ignore root paths
+            if ($entry == '..' || $entry == '.') {
+                continue;
             }
 
-            // Close reading handle
-            closedir($handle);
+            // Build full REAL path to entry
+            $fullPath = realpath($path . '/' . $entry);
+
+            // If this is a file
+            if (!$this->isDir($fullPath)) {
+                // Check file type if type filter is passed
+                if (!isset($extensions) || in_array(pathinfo($fullPath, PATHINFO_EXTENSION), $extensions)) {
+                    $result[] = $fullPath;
+                }
+            } else { // This is a folder
+                // Check if this full folder path is not ignored
+                if (in_array($fullPath, $restrict) === false) {
+                    // Go deeper in recursion
+                    $this->dir($fullPath, $extensions, $maxLevel, ++$level, $restrict, $result);
+                }
+            }
         }
+
+        // Close reading handle
+        closedir($handle);
 
         // Sort results
         if (sizeof($result)) {
