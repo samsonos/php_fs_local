@@ -115,7 +115,7 @@ class LocalFileService extends AbstractFileService
 
         // Check if path does not exists or if we cannot read a path
         $handle = opendir($path);
-        if (!file_exists($path) || $handle == false) {
+        if (!file_exists($path) || $handle === false) {
             return $result;
         }
 
@@ -150,7 +150,9 @@ class LocalFileService extends AbstractFileService
         // Close reading handle
         closedir($handle);
 
-        // Sort results and return
-        return sort($result);
+        // Sort results
+        sort($result);
+
+        return $result;
     }
 }
