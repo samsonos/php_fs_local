@@ -99,13 +99,7 @@ class LocalFileService extends AbstractFileService
      * @param array     $result   Collection of restricted paths
      * @return array $path recursive directory listing
      */
-    public function dir(
-        $path,
-        $maxLevel = null,
-        $level = 0,
-        $restrict = array('.git', '.svn', '.hg', '.settings'),
-        & $result = array()
-    ) {
+    public function dir($path, $maxLevel = null, $level = 0, $restrict = array(), & $result = array()) {
         // If we have nesting level limit
         if (isset($maxLevel) && $level > $maxLevel) {
             // Exit recursion
