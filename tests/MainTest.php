@@ -196,6 +196,9 @@ class EventTest extends \PHPUnit_Framework_TestCase
         // Scan project root dir
         $files = $this->fileService->dir(dirname(dirname(__FILE__)));
 
+        // Scan first level project root dir
+        $this->fileService->dir(dirname(dirname(__FILE__)), null, 1);
+
         // Perform test
         $this->assertEquals(true, in_array(__FILE__, $files), 'File service dir failed - This file is not found in listing');
     }
