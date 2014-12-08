@@ -138,12 +138,9 @@ class LocalFileService extends AbstractFileService
                 if (!isset($extensions) || in_array(pathinfo($fullPath, PATHINFO_EXTENSION), $extensions)) {
                     $result[] = $fullPath;
                 }
-            } else { // This is a folder
-                // Check if this full folder path is not ignored
-                if (in_array($fullPath, $restrict) === false) {
-                    // Go deeper in recursion
-                    $this->dir($fullPath, $extensions, $maxLevel, ++$level, $restrict, $result);
-                }
+            } elseif (in_array($fullPath, $restrict) === false) {
+                // If this is a folder - go deeper in recursion
+                $this->dir($fullPath, $extensions, $maxLevel, ++$level, $restrict, $result);
             }
         }
 
