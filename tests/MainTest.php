@@ -126,15 +126,11 @@ class EventTest extends \PHPUnit_Framework_TestCase
         // Create test dir
         $testDir2 = sys_get_temp_dir().'/testDir2/';
         if (!$this->fileService->exists($testDir2)) {
-            mkdir($testDir, 0777);
+            mkdir($testDir2, 0777);
         }
 
         // Copy whole dir with new file to a second new dir
         $this->fileService->copyPath($testDir, $testDir2);
-
-        foreach ($this->fileService->dir(sys_get_temp_dir()) as $file) {
-            echo $file."\n";
-        }
 
         // Perform test
         $this->assertFileExists($testDir2.$fileName, 'File service copy folder dir failed - Copied file not found');

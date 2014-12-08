@@ -10,10 +10,9 @@
         }
     ],
 	"require":{
-        "samsonos/php_fs":"*"
+        "samsonos/php_fs":"1.*"
     },
     "require-dev": {
-        "satooshi/php-coveralls": "dev-master",
         "phpunit/phpunit": "4.*"
     },
 	"license":"Open Software License (OSL) v 3.0",
